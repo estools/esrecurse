@@ -38,13 +38,24 @@ We can inherit `Visitor` instance easily.
 function DerivedVisitor() {
     esrecurse.Visitor.call(/* this for constructor */  this, /* visitor object. */  this);
 }
-DerivedVisitor.prototype = {
-    constructor: DerivedVisitor,
-    XXXStatement: function (node) {
-        this.visit(node.left);
-        // do something...
-        this.visit(node.right);
-    }
+util.inherits(DerivedVisitor, esrecurse.Visitor);
+DerivedVisitor.prototype.XXXStatement = function (node) {
+    this.visit(node.left);
+    // do something...
+    this.visit(node.right);
+};
+```
+
+And you can invoke default visiting operation inside custom visit operation.
+
+```javascript
+function DerivedVisitor() {
+    esrecurse.Visitor.call(/* this for constructor */  this, /* visitor object. */  this);
+}
+util.inherits(DerivedVisitor, esrecurse.Visitor);
+DerivedVisitor.prototype.XXXStatement = function (node) {
+    // do something...
+    this.visitChildren(node);
 };
 ```
 

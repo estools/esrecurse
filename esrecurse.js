@@ -52,18 +52,26 @@
         return typeof node === 'object' && typeof node.type === 'string';
     }
 
+    function isProperty(nodeType, key) {
+        return (nodeType === estraverse.Syntax.ObjectExpression || nodeType === estraverse.Syntax.ObjectPattern) && 'properties' === key;
+    }
+
     function Visitor(visitor) {
         this.__visitor = visitor;
     }
 
-    Visitor.prototype.visit = function (node) {
+    /* Default method for visiting children.
+     * When you need to call default visiting operation inside custom visiting
+     * operation, you can use it with `this.visitChildren(node)`.
+     */
+    Visitor.prototype.visitChildren = function (node) {
         var type, children, i, iz, j, jz, child;
 
-        type = node.type || estraverse.Syntax.Property;
-        if (this.__visitor[type]) {
-            this.__visitor[type].call(this, node);
+        if (node == null) {
             return;
         }
+
+        type = node.type || estraverse.Syntax.Property;
 
         children = estraverse.VisitorKeys[type];
         if (!children) {
@@ -75,8 +83,10 @@
             if (child) {
                 if (Array.isArray(child)) {
                     for (j = 0, jz = child.length; j < jz; ++j) {
-                        if (child[j] && isNode(child[j])) {
-                            this.visit(child[j]);
+                        if (child[j]) {
+                            if (isNode(child[j]) || isProperty(type, children[i])) {
+                                this.visit(child[j]);
+                            }
                         }
                     }
                 } else if (isNode(child)) {
@@ -84,6 +94,22 @@
                 }
             }
         }
+    };
+
+    /* Dispatching node. */
+    Visitor.prototype.visit = function (node) {
+        var type;
+
+        if (node == null) {
+            return;
+        }
+
+        type = node.type || estraverse.Syntax.Property;
+        if (this.__visitor[type]) {
+            this.__visitor[type].call(this, node);
+            return;
+        }
+        this.visitChildren(node);
     };
 
     exports.version = require('./package.json').version;
