@@ -86,6 +86,7 @@
         }
     };
 
+    exports.version = require('./package.json').version;
     exports.Visitor = Visitor;
     exports.visit = function (node, visitor) {
         var v = new Visitor(visitor);
