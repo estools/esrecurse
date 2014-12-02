@@ -21,7 +21,7 @@ esrecurse.visit(ast, {
 We can use `Visitor` instance.
 
 ```javascript
-var visitor = esrecurse.Visitor({
+var visitor = new esrecurse.Visitor({
     XXXStatement: function (node) {
         this.visit(node.left);
         // do something...
