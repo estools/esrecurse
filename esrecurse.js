@@ -75,7 +75,7 @@
             if (child) {
                 if (Array.isArray(child)) {
                     for (j = 0, jz = child.length; j < jz; ++j) {
-                        if (child[j]) {
+                        if (child[j] && isNode(child[j])) {
                             this.visit(child[j]);
                         }
                     }
