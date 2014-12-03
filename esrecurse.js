@@ -53,7 +53,7 @@
     }
 
     function isProperty(nodeType, key) {
-        return (nodeType === estraverse.Syntax.ObjectExpression || nodeType === estraverse.Syntax.ObjectPattern) && 'properties' === key;
+        return (nodeType === estraverse.Syntax.ObjectExpression || nodeType === estraverse.Syntax.ObjectPattern) && key === 'properties';
     }
 
     function Visitor(visitor) {
