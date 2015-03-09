@@ -3,7 +3,7 @@
   "description": "ECMAScript scope analyzer",
   "homepage": "http://github.com/estools/esrecurse",
   "main": "esrecurse.js",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "engines": {
     "node": ">=0.10.0"
   },
