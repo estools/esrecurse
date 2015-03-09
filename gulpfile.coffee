@@ -24,6 +24,10 @@ gulp = require 'gulp'
 mocha = require 'gulp-mocha'
 eslint = require 'gulp-eslint'
 minimist = require 'minimist'
+git = require 'gulp-git'
+bump = require 'gulp-bump'
+filter = require 'gulp-filter'
+tagVersion = require 'gulp-tag-version'
 require 'coffee-script/register'
 
 SOURCE = [
@@ -57,5 +61,19 @@ gulp.task 'lint', ->
     .pipe(eslint.formatEach('stylish', process.stderr))
     .pipe(eslint.failOnError())
 
+inc = (importance) ->
+    gulp.src(['./package.json'])
+        .pipe(bump({type: importance}))
+        .pipe(gulp.dest('./'))
+        .pipe(git.commit('Bumps package version'))
+        .pipe(filter('package.json'))
+        .pipe(tagVersion({
+            prefix: ''
+        }))
+
 gulp.task 'travis', [ 'lint', 'test' ]
 gulp.task 'default', [ 'travis' ]
+
+gulp.task 'patch', [ ], -> inc('patch')
+gulp.task 'minor', [ ], -> inc('minor')
+gulp.task 'major', [ ], -> inc('major')
