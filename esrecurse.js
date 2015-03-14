@@ -57,7 +57,7 @@
     }
 
     function Visitor(visitor) {
-        this.__visitor = visitor;
+        this.__visitor = visitor ||  this;
     }
 
     /* Default method for visiting children.

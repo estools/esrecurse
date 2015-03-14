@@ -36,7 +36,7 @@ We can inherit `Visitor` instance easily.
 
 ```javascript
 function DerivedVisitor() {
-    esrecurse.Visitor.call(/* this for constructor */  this, /* visitor object. */  this);
+    esrecurse.Visitor.call(/* this for constructor */  this  /* visitor object automatically becomes this. */);
 }
 util.inherits(DerivedVisitor, esrecurse.Visitor);
 DerivedVisitor.prototype.XXXStatement = function (node) {
@@ -50,7 +50,7 @@ And you can invoke default visiting operation inside custom visit operation.
 
 ```javascript
 function DerivedVisitor() {
-    esrecurse.Visitor.call(/* this for constructor */  this, /* visitor object. */  this);
+    esrecurse.Visitor.call(/* this for constructor */  this  /* visitor object automatically becomes this. */);
 }
 util.inherits(DerivedVisitor, esrecurse.Visitor);
 DerivedVisitor.prototype.XXXStatement = function (node) {
