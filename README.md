@@ -1,6 +1,6 @@
-### Esrecurse [![Build Status](https://travis-ci.org/estools/esrecurse.svg?branch=master)](http://travis-ci.org/estools/esrecurse)
+### Esrecurse [![Build Status](https://travis-ci.org/estools/esrecurse.svg?branch=master)](https://travis-ci.org/estools/esrecurse)
 
-Esrecurse ([esrecurse](http://github.com/estools/esrecurse)) is
+Esrecurse ([esrecurse](https://github.com/estools/esrecurse)) is
 [ECMAScript](http://www.ecma-international.org/publications/standards/Ecma-262.htm)
 recursive traversing functionality.
 
@@ -61,8 +61,8 @@ DerivedVisitor.prototype.XXXStatement = function (node) {
 
 ### License
 
-Copyright (C) 2014 [Yusuke Suzuki](http://github.com/Constellation)
- (twitter: [@Constellation](http://twitter.com/Constellation)) and other contributors.
+Copyright (C) 2014 [Yusuke Suzuki](https://github.com/Constellation)
+ (twitter: [@Constellation](https://twitter.com/Constellation)) and other contributors.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
