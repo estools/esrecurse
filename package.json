@@ -1,7 +1,7 @@
 {
   "name": "esrecurse",
   "description": "ECMAScript scope analyzer",
-  "homepage": "http://github.com/estools/esrecurse",
+  "homepage": "https://github.com/estools/esrecurse",
   "main": "esrecurse.js",
   "version": "3.1.1",
   "engines": {
@@ -11,12 +11,12 @@
     {
       "name": "Yusuke Suzuki",
       "email": "utatane.tea@gmail.com",
-      "web": "http://github.com/Constellation"
+      "web": "https://github.com/Constellation"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "http://github.com/estools/esrecurse.git"
+    "url": "https://github.com/estools/esrecurse.git"
   },
   "dependencies": {
     "estraverse": "~3.1.0"
