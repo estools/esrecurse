@@ -1,4 +1,4 @@
-### Esrecurse [![Build Status](https://secure.travis-ci.org/estools/esrecurse.png)](http://travis-ci.org/estools/esrecurse)
+### Esrecurse [![Build Status](https://travis-ci.org/estools/esrecurse.svg?branch=master)](http://travis-ci.org/estools/esrecurse)
 
 Esrecurse ([esrecurse](http://github.com/estools/esrecurse)) is
 [ECMAScript](http://www.ecma-international.org/publications/standards/Ecma-262.htm)
