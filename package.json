@@ -1,6 +1,6 @@
 {
   "name": "esrecurse",
-  "description": "ECMAScript scope analyzer",
+  "description": "ECMAScript AST recursive visitor",
   "homepage": "https://github.com/estools/esrecurse",
   "main": "esrecurse.js",
   "version": "3.1.1",
