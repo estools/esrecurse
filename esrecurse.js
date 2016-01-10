@@ -30,12 +30,9 @@
 
     estraverse = require('estraverse');
 
-    isArray = Array.isArray;
-    if (!isArray) {
-        isArray = function isArray(array) {
-            return Object.prototype.toString.call(array) === '[object Array]';
-        };
-    }
+    isArray = Array.isArray || function isArray(array) {
+        return Object.prototype.toString.call(array) === '[object Array]';
+    };
 
     objectKeys = Object.keys || function (o) {
         var keys = [], key;
@@ -81,7 +78,7 @@
         for (i = 0, iz = children.length; i < iz; ++i) {
             child = node[children[i]];
             if (child) {
-                if (Array.isArray(child)) {
+                if (isArray(child)) {
                     for (j = 0, jz = child.length; j < jz; ++j) {
                         if (child[j]) {
                             if (isNode(child[j]) || isProperty(type, children[i])) {
