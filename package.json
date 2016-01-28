@@ -19,7 +19,8 @@
     "url": "https://github.com/estools/esrecurse.git"
   },
   "dependencies": {
-    "estraverse": "~4.1.0"
+    "estraverse": "~4.1.0",
+    "object-assign": "^4.0.1"
   },
   "devDependencies": {
     "chai": "^3.3.0",

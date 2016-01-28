@@ -157,3 +157,51 @@ describe 'inherit Visitor', ->
         visitor.visit(tree)
 
         expect(visitor.log).to.deep.equal [ 'decl', 'a', 'rest' ]
+
+describe 'bidirectional relationship at non visitor keys.', ->
+    it 'ExpressionStatement <-> Identifier', ->
+        tree =
+            type: 'ExpressionStatement'
+            expression: {
+                type: 'Identifier'
+                name: 'foo'
+            }
+        tree.expression.parent = tree
+
+        log = []
+        esrecurse.visit tree,
+            Identifier: (node) ->
+                log.push(node.name)
+
+
+        expect(log).to.deep.equal ['foo']
+
+    it 'ExpressionStatement <-> UnknownNode with the childVisitorKeys option', ->
+        tree =
+            type: 'ExpressionStatement'
+            expression: {
+                type: 'UnknownNode'
+                argument: {
+                    type: 'Identifier'
+                    name: 'foo'
+                }
+            }
+        tree.expression.parent = tree
+        tree.expression.argument.parent = tree.expression
+
+        log = []
+        esrecurse.visit(
+            tree,
+            {
+                Identifier: (node) ->
+                    log.push(node.name)
+            },
+            {
+                childVisitorKeys: {
+                    UnknownNode: ['argument']
+                }
+            }
+        )
+
+
+        expect(log).to.deep.equal ['foo']
