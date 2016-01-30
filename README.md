@@ -93,6 +93,23 @@ esrecurse.visit(
 );
 ```
 
+We can use the `fallback` option as well.
+If the `fallback` option is `"iteration"`, `esrecurse` would visit all enumerable properties of unknown nodes.
+Please note circular references cause the stack overflow. AST might have circular references in additional properties for some purpose (e.g. `node.parent`).
+
+```javascript
+esrecurse.visit(
+    ast,
+    {
+        Literal: function (node) {
+            // do something...
+        }
+    },
+    {
+        fallback: 'iteration'
+    }
+);
+```
 
 ### License
 

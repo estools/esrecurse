@@ -48,7 +48,44 @@ describe 'object expression', ->
         expect(log).to.deep.equal ['a', 'b']
 
 
-describe 'no listed keys fallback', ->
+describe 'non listed keys throw an error', ->
+    it 'traverse', ->
+        tree =
+            type: 'TestStatement'
+            id: {
+                type: 'Identifier'
+                name: 'decl'
+            }
+            params: [{
+                type: 'Identifier'
+                name: 'a'
+            }]
+            defaults: [{
+                type: 'Literal'
+                value: 20
+            }]
+            rest: {
+                type: 'Identifier'
+                name: 'rest'
+            }
+            body:
+                type: 'BlockStatement'
+                body: []
+
+        expect(->
+            log = []
+            esrecurse.visit(
+                tree,
+                {
+                    Literal: (node) ->
+                        log.push(node.value)
+                }
+            )
+        ).to.throw 'Unknown node type TestStatement.'
+
+
+
+describe 'no listed keys fallback if "fallback" option was given', ->
     it 'traverse', ->
         tree =
             type: 'TestStatement'
@@ -73,9 +110,16 @@ describe 'no listed keys fallback', ->
                 body: []
 
         log = []
-        esrecurse.visit tree,
-            Literal: (node) ->
-                log.push(node.value)
+        esrecurse.visit(
+            tree,
+            {
+                Literal: (node) ->
+                    log.push(node.value)
+            },
+            {
+                fallback: 'iteration'
+            }
+        )
 
         expect(log).to.deep.equal [ 20 ]
 
@@ -107,7 +151,7 @@ describe 'inherit Visitor', ->
         class Derived extends esrecurse.Visitor
             constructor: ->
                 @log = []
-                super @
+                super @, {fallback: 'iteration'}
 
             Identifier: (node) ->
                 @log.push node.name
@@ -146,7 +190,7 @@ describe 'inherit Visitor', ->
         class Derived extends esrecurse.Visitor
             constructor: ->
                 @log = []
-                super @
+                super @, {fallback: 'iteration'}
 
             BlockStatement: (node) ->
 
