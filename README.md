@@ -59,6 +59,58 @@ DerivedVisitor.prototype.XXXStatement = function (node) {
 };
 ```
 
+The `childVisitorKeys` option does customize the behavoir of `this.visitChildren(node)`.
+We can use user-defined node types.
+
+```javascript
+// This tree contains a user-defined `TestExpression` node.
+var tree = {
+    type: 'TestExpression',
+
+    // This 'argument' is the property containing the other **node**.
+    argument: {
+        type: 'Literal',
+        value: 20
+    },
+
+    // This 'extended' is the property not containing the other **node**.
+    extended: true
+};
+esrecurse.visit(
+    ast,
+    {
+        Literal: function (node) {
+            // do something...
+        }
+    },
+    {
+        // Extending the existing traversing rules.
+        childVisitorKeys: {
+            // TargetNodeName: [ 'keys', 'containing', 'the', 'other', '**node**' ]
+            TestExpression: ['argument']
+        }
+    }
+);
+```
+
+We can use the `fallback` option as well.
+If the `fallback` option is `"iteration"`, `esrecurse` would visit all enumerable properties of unknown nodes.
+Please note circular references cause the stack overflow. AST might have circular references in additional properties for some purpose (e.g. `node.parent`).
+
+```javascript
+esrecurse.visit(
+    ast,
+    {
+        Literal: function (node) {
+            // do something...
+        }
+    },
+    {
+        fallback: 'iteration'
+    }
+);
+```
+
 ### License
 
 Copyright (C) 2014 [Yusuke Suzuki](https://github.com/Constellation)

@@ -24,10 +24,12 @@
 (function () {
     'use strict';
 
-    var estraverse,
+    var assign,
+        estraverse,
         isArray,
         objectKeys;
 
+    assign = require('object-assign');
     estraverse = require('estraverse');
 
     isArray = Array.isArray || function isArray(array) {
@@ -53,8 +55,14 @@
         return (nodeType === estraverse.Syntax.ObjectExpression || nodeType === estraverse.Syntax.ObjectPattern) && key === 'properties';
     }
 
-    function Visitor(visitor) {
+    function Visitor(visitor, options) {
+        options = options || {};
+
         this.__visitor = visitor ||  this;
+        this.__childVisitorKeys = options.childVisitorKeys
+            ? assign({}, estraverse.VisitorKeys, options.childVisitorKeys)
+            : estraverse.VisitorKeys;
+        this.__fallback = options.fallback === 'iteration';
     }
 
     /* Default method for visiting children.
@@ -70,9 +78,13 @@
 
         type = node.type || estraverse.Syntax.Property;
 
-        children = estraverse.VisitorKeys[type];
+        children = this.__childVisitorKeys[type];
         if (!children) {
-            children = objectKeys(node);
+            if (this.__fallback) {
+                children = objectKeys(node);
+            } else {
+                throw new Error('Unknown node type ' + type + '.');
+            }
         }
 
         for (i = 0, iz = children.length; i < iz; ++i) {
@@ -111,8 +123,8 @@
 
     exports.version = require('./package.json').version;
     exports.Visitor = Visitor;
-    exports.visit = function (node, visitor) {
-        var v = new Visitor(visitor);
+    exports.visit = function (node, visitor, options) {
+        var v = new Visitor(visitor, options);
         v.visit(node);
     };
 }());
