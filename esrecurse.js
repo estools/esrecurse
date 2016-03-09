@@ -62,7 +62,11 @@
         this.__childVisitorKeys = options.childVisitorKeys
             ? assign({}, estraverse.VisitorKeys, options.childVisitorKeys)
             : estraverse.VisitorKeys;
-        this.__fallback = options.fallback === 'iteration';
+        if (options.fallback === 'iteration') {
+            this.__fallback = objectKeys;
+        } else if (typeof options.fallback === 'function') {
+            this.__fallback = options.fallback;
+        }
     }
 
     /* Default method for visiting children.
@@ -81,7 +85,7 @@
         children = this.__childVisitorKeys[type];
         if (!children) {
             if (this.__fallback) {
-                children = objectKeys(node);
+                children = this.__fallback(node);
             } else {
                 throw new Error('Unknown node type ' + type + '.');
             }

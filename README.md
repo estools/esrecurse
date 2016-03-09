@@ -111,6 +111,27 @@ esrecurse.visit(
 );
 ```
 
+If the `fallback` option is a function, `esrecurse` calls this function to determine the enumerable properties of unknown nodes.
+Please note circular references cause the stack overflow. AST might have circular references in additional properties for some purpose (e.g. `node.parent`).
+
+```javascript
+esrecurse.visit(
+    ast,
+    {
+        Literal: function (node) {
+            // do something...
+        }
+    },
+    {
+        fallback: function (node) {
+            return Object.keys(node).filter(function(key) {
+                return key !== 'argument'
+            });
+        }
+    }
+);
+```
+
 ### License
 
 Copyright (C) 2014 [Yusuke Suzuki](https://github.com/Constellation)
