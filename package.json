@@ -3,7 +3,7 @@
   "description": "ECMAScript AST recursive visitor",
   "homepage": "https://github.com/estools/esrecurse",
   "main": "esrecurse.js",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "engines": {
     "node": ">=0.10.0"
   },
