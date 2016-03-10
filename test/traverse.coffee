@@ -123,6 +123,45 @@ describe 'no listed keys fallback if "fallback" option was given', ->
 
         expect(log).to.deep.equal [ 20 ]
 
+describe 'no listed keys fallback if "fallback" option is a function', ->
+    it 'traverse', ->
+        tree =
+            type: 'TestStatement'
+            id: {
+                type: 'Identifier'
+                name: 'decl'
+            }
+            params: [{
+                type: 'Identifier'
+                name: 'a'
+            }]
+            defaults: [{
+                type: 'Literal'
+                value: 20
+            }]
+            rest: {
+                type: 'Identifier'
+                name: 'rest'
+            }
+            body:
+                type: 'BlockStatement'
+                body: []
+
+        result = 0
+        esrecurse.visit(
+            tree,
+            {
+                Identifier: () ->
+                    result++;
+            },
+            {
+                fallback: (node) ->
+                    Object.keys(node).filter((key) -> key != 'id')
+            }
+        )
+
+        expect(result).to.equal 2
+
 
 describe 'inherit Visitor', ->
     it 'log names', ->
