@@ -1,7 +1,7 @@
 ### Esrecurse [![Build Status](https://travis-ci.org/estools/esrecurse.svg?branch=master)](https://travis-ci.org/estools/esrecurse)
 
 Esrecurse ([esrecurse](https://github.com/estools/esrecurse)) is
-[ECMAScript](http://www.ecma-international.org/publications/standards/Ecma-262.htm)
+[ECMAScript](https://www.ecma-international.org/publications/standards/Ecma-262.htm)
 recursive traversing functionality.
 
 ### Example Usage
