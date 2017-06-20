@@ -12,3 +12,4 @@ coverage/
 
 npm-debug.log
 .vimrc.local
+package-lock.json
