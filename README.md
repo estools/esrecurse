@@ -44,6 +44,7 @@ class Derived extends esrecurse.Visitor {
     XXXStatement(node) {
     }
 }
+```
 
 ```javascript
 function DerivedVisitor() {
