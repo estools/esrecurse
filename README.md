@@ -35,6 +35,17 @@ visitor.visit(ast);
 We can inherit `Visitor` instance easily.
 
 ```javascript
+class Derived extends esrecurse.Visitor {
+    constructor()
+    {
+        super(null);
+    }
+
+    XXXStatement(node) {
+    }
+}
+
+```javascript
 function DerivedVisitor() {
     esrecurse.Visitor.call(/* this for constructor */  this  /* visitor object automatically becomes this. */);
 }
