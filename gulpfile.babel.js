@@ -35,6 +35,10 @@ const SOURCE = [
 ];
 
 let ESLINT_OPTION = {
+    parser: 'babel-eslint',
+    parserOptions: {
+        'sourceType': 'module'
+    },
     rules: {
         'quotes': 0,
         'eqeqeq': 0,
