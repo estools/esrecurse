@@ -71,7 +71,7 @@ DerivedVisitor.prototype.XXXStatement = function (node) {
 };
 ```
 
-The `childVisitorKeys` option does customize the behavoir of `this.visitChildren(node)`.
+The `childVisitorKeys` option does customize the behaviour of `this.visitChildren(node)`.
 We can use user-defined node types.
 
 ```javascript
