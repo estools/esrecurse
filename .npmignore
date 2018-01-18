@@ -13,3 +13,4 @@ t.js
 /cover_html/
 /coverage/
 /.coverage_data/
+package-lock.json
