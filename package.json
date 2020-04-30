@@ -42,6 +42,19 @@
     "nyc": "^15.0.1"
   },
   "license": "BSD-2-Clause",
+  "nyc": {
+    "branches": 100,
+    "lines": 100,
+    "functions": 100,
+    "statements": 100,
+    "reporter": [
+      "html",
+      "text"
+    ],
+    "exclude": [
+      "test"
+    ]
+  },
   "scripts": {
     "test": "npm run lint && npm run unit-test",
     "unit-test": "nyc mocha --require chai/register-expect --require @babel/register test",
