@@ -1,3 +1,5 @@
+// Todo: Remove eslint disable directive once have a Babel routine
+/* eslint-disable no-var, prefer-template */
 /*
   Copyright (C) 2014 Yusuke Suzuki <utatane.tea@gmail.com>
 
