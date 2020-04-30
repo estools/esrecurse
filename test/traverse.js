@@ -51,6 +51,29 @@ describe('object expression', () => {
 
         expect(log).to.deep.equal(['a', 'b']);
     });
+
+    it('silently recover when AST missing visitor keys', function() {
+        const tree = {
+            type: 'ObjectExpression',
+            properties: [{
+                type: 'Property',
+                key: {
+                    type: 'Identifier',
+                    name: 'a'
+                }
+            }]
+        };
+
+        const log = [];
+        esrecurse.visit(tree, {
+            Identifier(node) {
+                return log.push(node.name);
+            }
+        }
+        );
+
+        expect(log).to.deep.equal(['a']);
+    });
 });
 
 describe('chain expression', () =>
