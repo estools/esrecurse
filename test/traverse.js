@@ -355,6 +355,10 @@ describe('inherit Visitor', function() {
                 this.log = [];
             }
 
+            FunctionDeclaration(node) {
+                return this.log.push(node.name);
+            }
+
             Identifier(node) {
                 return this.log.push(node.name);
             }
@@ -397,6 +401,35 @@ describe('inherit Visitor', function() {
         });
 
         expect(visitor.log).to.deep.equal(['myKey', 'myValue']);
+    });
+
+    it('`visitChildren` visits non-Node `ObjectExpression`/`ObjectPattern` property keys', function () {
+        class Derived extends esrecurse.Visitor {
+            constructor() {
+                super(null, { fallback: 'iteration' });
+                this.log = [];
+            }
+
+            Property(node) {
+                return this.log.push(node.name);
+            }
+        }
+
+        const visitor = new Derived();
+        visitor.visitChildren({
+            type: 'ObjectExpression',
+            properties: [{
+                name: 'myExpression'
+            }]
+        });
+        visitor.visitChildren({
+            type: 'ObjectPattern',
+            properties: [{
+                name: 'myPattern'
+            }]
+        });
+
+        expect(visitor.log).to.deep.equal(['myExpression', 'myPattern']);
     });
 
     it('customize behavior', function() {
