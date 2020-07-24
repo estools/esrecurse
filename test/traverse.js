@@ -318,6 +318,27 @@ describe('inherit Visitor', function() {
         expect(visitor.log).to.be.empty;
     });
 
+    it('`visitChildren` ignores non-Node children', function () {
+        class Derived extends esrecurse.Visitor {
+            constructor() {
+                super(null, { fallback: 'iteration' });
+                this.log = [];
+            }
+
+            Identifier(node) {
+                return this.log.push(node.name);
+            }
+        }
+
+        const visitor = new Derived();
+        visitor.visitChildren({
+            type: 'FunctionDeclaration',
+            params: [null, {}]
+        });
+
+        expect(visitor.log).to.be.empty;
+    });
+
     it('customize behavior', function() {
         const tree = {
             type: 'TestStatement',
