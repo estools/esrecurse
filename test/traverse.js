@@ -299,6 +299,36 @@ describe('inherit Visitor', function() {
         expect(visitor.log).to.be.empty;
     });
 
+    it('`visit` defaults to Property type', function () {
+        class Derived extends esrecurse.Visitor {
+            constructor() {
+                super(null, { fallback: 'iteration' });
+                this.log = [];
+            }
+
+            key(node) {
+                return this.log.push(node.name);
+            }
+            value(node) {
+                return this.log.push(node.name);
+            }
+        }
+
+        const visitor = new Derived();
+        visitor.visit({
+            key: {
+                name: 'myKey',
+                type: 'key'
+            },
+            value: {
+                name: 'myValue',
+                type: 'value'
+            }
+        });
+
+        expect(visitor.log).to.deep.equal(['myKey', 'myValue']);
+    });
+
     // `null` should not get to `visitChildren` through `visit`
     it('`visitChildren` handles `null`', function () {
         class Derived extends esrecurse.Visitor {
