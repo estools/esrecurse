@@ -29,6 +29,7 @@
     var estraverse = require('estraverse');
 
     function isNode(node) {
+        // istanbul ignore if -- Is currently always truthy
         if (node == null) {
             return false;
         }
