@@ -32,14 +32,14 @@
     "estraverse": "^5.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/preset-env": "^7.9.6",
-    "@babel/register": "^7.9.0",
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/register": "^7.10.5",
     "chai": "^4.2.0",
-    "eslint": "^6.8.0",
+    "eslint": "^7.5.0",
     "esprima": "^4.0.1",
-    "mocha": "^7.1.2",
-    "nyc": "^15.0.1"
+    "mocha": "^8.0.1",
+    "nyc": "^15.1.0"
   },
   "license": "BSD-2-Clause",
   "nyc": {
