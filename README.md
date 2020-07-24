@@ -10,7 +10,7 @@ The following code will output all variables declared at the root of a file.
 
 ```javascript
 esrecurse.visit(ast, {
-    XXXStatement: function (node) {
+    XXXStatement (node) {
         this.visit(node.left);
         // do something...
         this.visit(node.right);
@@ -21,8 +21,8 @@ esrecurse.visit(ast, {
 We can use `Visitor` instance.
 
 ```javascript
-var visitor = new esrecurse.Visitor({
-    XXXStatement: function (node) {
+const visitor = new esrecurse.Visitor({
+    XXXStatement (node) {
         this.visit(node.left);
         // do something...
         this.visit(node.right);
@@ -36,8 +36,7 @@ We can inherit `Visitor` instance easily.
 
 ```javascript
 class Derived extends esrecurse.Visitor {
-    constructor()
-    {
+    constructor() {
         super(null);
     }
 
@@ -76,7 +75,7 @@ We can use user-defined node types.
 
 ```javascript
 // This tree contains a user-defined `TestExpression` node.
-var tree = {
+const tree = {
     type: 'TestExpression',
 
     // This 'argument' is the property containing the other **node**.
@@ -91,7 +90,7 @@ var tree = {
 esrecurse.visit(
     ast,
     {
-        Literal: function (node) {
+        Literal (node) {
             // do something...
         }
     },
@@ -113,7 +112,7 @@ Please note circular references cause the stack overflow. AST might have circula
 esrecurse.visit(
     ast,
     {
-        Literal: function (node) {
+        Literal (node) {
             // do something...
         }
     },
@@ -130,13 +129,13 @@ Please note circular references cause the stack overflow. AST might have circula
 esrecurse.visit(
     ast,
     {
-        Literal: function (node) {
+        Literal (node) {
             // do something...
         }
     },
     {
-        fallback: function (node) {
-            return Object.keys(node).filter(function(key) {
+        fallback (node) {
+            return Object.keys(node).filter((key) => {
                 return key !== 'argument'
             });
         }

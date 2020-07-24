@@ -1,3 +1,5 @@
+// Todo: Remove eslint disable directive once have a Babel routine
+/* eslint-disable no-var, prefer-template */
 /*
   Copyright (C) 2014 Yusuke Suzuki <utatane.tea@gmail.com>
 
@@ -27,6 +29,7 @@
     var estraverse = require('estraverse');
 
     function isNode(node) {
+        // istanbul ignore if -- Is currently always truthy
         if (node == null) {
             return false;
         }
