@@ -50,9 +50,40 @@ describe('object expression', () =>
 
 
         return expect(log).to.deep.equal(['a', 'b']);
-})
+    })
 );
 
+describe('chain expression', () =>
+    it('expressions', function() {
+        let tree = {
+            type: 'ChainExpression',
+            expression: [{
+                type: 'MemberExpression',
+                object: {
+                    type: 'Identifier',
+                    name: 'a'
+                },
+                property: {
+                    type: 'Identifier',
+                    name: 'b'
+                },
+                computed: false,
+                optional: true
+            }]
+        };
+
+        let log = [];
+        esrecurse.visit(tree, {
+                Identifier(node) {
+                    return log.push(node.name);
+                }
+            }
+        );
+
+
+        return expect(log).to.deep.equal(['a', 'b']);
+    })
+);
 
 describe('non listed keys throw an error', () =>
     it('traverse', function() {
