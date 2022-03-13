@@ -78,7 +78,7 @@ describe('object expression', () => {
 
 describe('chain expression', () =>
     it('expressions', function() {
-        let tree = {
+        const tree = {
             type: 'ChainExpression',
             expression: [{
                 type: 'MemberExpression',
@@ -95,14 +95,12 @@ describe('chain expression', () =>
             }]
         };
 
-        let log = [];
+        const log = [];
         esrecurse.visit(tree, {
-                Identifier(node) {
-                    return log.push(node.name);
-                }
+            Identifier(node) {
+                return log.push(node.name);
             }
-        );
-
+        });
 
         return expect(log).to.deep.equal(['a', 'b']);
     })
