@@ -145,4 +145,5 @@ esrecurse.visit(
 ```
 
 ### License
-Refer [License file](LICENSE.md)
+
+See [LICENSE.md](./LICENSE.md).
