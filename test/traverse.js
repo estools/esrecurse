@@ -1,31 +1,32 @@
-// Copyright (C) 2013 Yusuke Suzuki <utatane.tea@gmail.com>
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//
-//   * Redistributions of source code must retain the above copyright
-//     notice, this list of conditions and the following disclaimer.
-//   * Redistributions in binary form must reproduce the above copyright
-//     notice, this list of conditions and the following disclaimer in the
-//     documentation and/or other materials provided with the distribution.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-// ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-// THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+/*
+Copyright (C) 2013 Yusuke Suzuki <utatane.tea@gmail.com>
 
-var expect = require('chai').expect;
-var esrecurse = require('..');
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-describe('object expression', () =>
+  * Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  * Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+import esrecurse from '../';
+
+describe('object expression', () => {
     it('properties', function() {
-        let tree = {
+        const tree = {
             type: 'ObjectExpression',
             properties: [{
                 type: 'Property',
@@ -40,7 +41,7 @@ describe('object expression', () =>
             }]
         };
 
-        let log = [];
+        const log = [];
         esrecurse.visit(tree, {
             Identifier(node) {
                 return log.push(node.name);
@@ -48,14 +49,36 @@ describe('object expression', () =>
         }
         );
 
+        expect(log).to.deep.equal(['a', 'b']);
+    });
 
-        return expect(log).to.deep.equal(['a', 'b']);
-    })
-);
+    it('silently recover when AST missing visitor keys', function() {
+        const tree = {
+            type: 'ObjectExpression',
+            properties: [{
+                type: 'Property',
+                key: {
+                    type: 'Identifier',
+                    name: 'a'
+                }
+            }]
+        };
+
+        const log = [];
+        esrecurse.visit(tree, {
+            Identifier(node) {
+                return log.push(node.name);
+            }
+        }
+        );
+
+        expect(log).to.deep.equal(['a']);
+    });
+});
 
 describe('chain expression', () =>
     it('expressions', function() {
-        let tree = {
+        const tree = {
             type: 'ChainExpression',
             expression: [{
                 type: 'MemberExpression',
@@ -72,22 +95,20 @@ describe('chain expression', () =>
             }]
         };
 
-        let log = [];
+        const log = [];
         esrecurse.visit(tree, {
-                Identifier(node) {
-                    return log.push(node.name);
-                }
+            Identifier(node) {
+                return log.push(node.name);
             }
-        );
-
+        });
 
         return expect(log).to.deep.equal(['a', 'b']);
     })
 );
 
-describe('non listed keys throw an error', () =>
+describe('non listed keys throw an error', () => {
     it('traverse', function() {
-        let tree = {
+        const tree = {
             type: 'TestStatement',
             id: {
                 type: 'Identifier',
@@ -111,8 +132,8 @@ describe('non listed keys throw an error', () =>
             }
         };
 
-        return expect(function() {
-            let log = [];
+        expect(function() {
+            const log = [];
             return esrecurse.visit(
                 tree,
                 {
@@ -122,14 +143,13 @@ describe('non listed keys throw an error', () =>
                 }
             );
         }).to.throw('Unknown node type TestStatement.');
-    })
-);
+    });
+});
 
 
-
-describe('no listed keys fallback if "fallback" option was given', () =>
+describe('no listed keys fallback if "fallback" option was given', () => {
     it('traverse', function() {
-        let tree = {
+        const tree = {
             type: 'TestStatement',
             id: {
                 type: 'Identifier',
@@ -153,7 +173,7 @@ describe('no listed keys fallback if "fallback" option was given', () =>
             }
         };
 
-        let log = [];
+        const log = [];
         esrecurse.visit(
             tree,
             {
@@ -166,13 +186,13 @@ describe('no listed keys fallback if "fallback" option was given', () =>
             }
         );
 
-        return expect(log).to.deep.equal([ 20 ]);
-})
-);
+        expect(log).to.deep.equal([ 20 ]);
+    });
+});
 
-describe('no listed keys fallback if "fallback" option is a function', () =>
+describe('no listed keys fallback if "fallback" option is a function', () => {
     it('traverse', function() {
-        let tree = {
+        const tree = {
             type: 'TestStatement',
             id: {
                 type: 'Identifier',
@@ -211,14 +231,14 @@ describe('no listed keys fallback if "fallback" option is a function', () =>
             }
         );
 
-        return expect(result).to.equal(2);
-    })
-);
+        expect(result).to.equal(2);
+    });
+});
 
 
 describe('inherit Visitor', function() {
     it('log names', function() {
-        let tree = {
+        const tree = {
             type: 'TestStatement',
             id: {
                 type: 'Identifier',
@@ -244,7 +264,7 @@ describe('inherit Visitor', function() {
 
         class Derived extends esrecurse.Visitor {
             constructor() {
-                super(null, {fallback: 'iteration'});
+                super(null, { fallback: 'iteration' });
                 this.log = [];
             }
 
@@ -253,14 +273,165 @@ describe('inherit Visitor', function() {
             }
         }
 
-        let visitor = new Derived;
+        const visitor = new Derived();
         visitor.visit(tree);
 
-        return expect(visitor.log).to.deep.equal([ 'decl', 'a', 'rest' ]);
-});
+        expect(visitor.log).to.deep.equal([ 'decl', 'a', 'rest' ]);
+    });
 
-    return it('customize behavior', function() {
-        let tree = {
+    it('`visit` handles `null`', function () {
+        class Derived extends esrecurse.Visitor {
+            constructor() {
+                super(null, { fallback: 'iteration' });
+                this.log = [];
+            }
+
+            Identifier(node) {
+                return this.log.push(node.name);
+            }
+        }
+
+        const visitor = new Derived();
+        visitor.visit(null);
+
+        expect(visitor.log).to.be.empty;
+    });
+
+    it('`visit` defaults to Property type', function () {
+        class Derived extends esrecurse.Visitor {
+            constructor() {
+                super(null, { fallback: 'iteration' });
+                this.log = [];
+            }
+
+            key(node) {
+                return this.log.push(node.name);
+            }
+            value(node) {
+                return this.log.push(node.name);
+            }
+        }
+
+        const visitor = new Derived();
+        visitor.visit({
+            key: {
+                name: 'myKey',
+                type: 'key'
+            },
+            value: {
+                name: 'myValue',
+                type: 'value'
+            }
+        });
+
+        expect(visitor.log).to.deep.equal(['myKey', 'myValue']);
+    });
+
+    // `null` should not get to `visitChildren` through `visit`
+    it('`visitChildren` handles `null`', function () {
+        class Derived extends esrecurse.Visitor {
+            constructor() {
+                super(null, { fallback: 'iteration' });
+                this.log = [];
+            }
+
+            Identifier(node) {
+                return this.log.push(node.name);
+            }
+        }
+
+        const visitor = new Derived();
+        visitor.visitChildren(null);
+
+        expect(visitor.log).to.be.empty;
+    });
+
+    it('`visitChildren` ignores non-Node children', function () {
+        class Derived extends esrecurse.Visitor {
+            constructor() {
+                super(null, { fallback: 'iteration' });
+                this.log = [];
+            }
+
+            FunctionDeclaration(node) {
+                return this.log.push(node.name);
+            }
+
+            Identifier(node) {
+                return this.log.push(node.name);
+            }
+        }
+
+        const visitor = new Derived();
+        visitor.visitChildren({
+            type: 'FunctionDeclaration',
+            params: [null, {}]
+        });
+
+        expect(visitor.log).to.be.empty;
+    });
+
+    it('`visitChildren` defaults to Property type', function () {
+        class Derived extends esrecurse.Visitor {
+            constructor() {
+                super(null, { fallback: 'iteration' });
+                this.log = [];
+            }
+
+            key(node) {
+                return this.log.push(node.name);
+            }
+            value(node) {
+                return this.log.push(node.name);
+            }
+        }
+
+        const visitor = new Derived();
+        visitor.visitChildren({
+            key: {
+                name: 'myKey',
+                type: 'key'
+            },
+            value: {
+                name: 'myValue',
+                type: 'value'
+            }
+        });
+
+        expect(visitor.log).to.deep.equal(['myKey', 'myValue']);
+    });
+
+    it('`visitChildren` visits non-Node `ObjectExpression`/`ObjectPattern` property keys', function () {
+        class Derived extends esrecurse.Visitor {
+            constructor() {
+                super(null, { fallback: 'iteration' });
+                this.log = [];
+            }
+
+            Property(node) {
+                return this.log.push(node.name);
+            }
+        }
+
+        const visitor = new Derived();
+        visitor.visitChildren({
+            type: 'ObjectExpression',
+            properties: [{
+                name: 'myExpression'
+            }]
+        });
+        visitor.visitChildren({
+            type: 'ObjectPattern',
+            properties: [{
+                name: 'myPattern'
+            }]
+        });
+
+        expect(visitor.log).to.deep.equal(['myExpression', 'myPattern']);
+    });
+
+    it('customize behavior', function() {
+        const tree = {
             type: 'TestStatement',
             id: {
                 type: 'Identifier',
@@ -289,27 +460,27 @@ describe('inherit Visitor', function() {
 
         class Derived extends esrecurse.Visitor {
             constructor() {
-                super(null, {fallback: 'iteration'});
+                super(null, { fallback: 'iteration' });
                 this.log = [];
             }
 
-            BlockStatement(node) {}
+            BlockStatement(/* node */) {}
 
             Identifier(node) {
                 return this.log.push(node.name);
             }
         }
 
-        let visitor = new Derived;
+        const visitor = new Derived();
         visitor.visit(tree);
 
-        return expect(visitor.log).to.deep.equal([ 'decl', 'a', 'rest' ]);
-});
+        expect(visitor.log).to.deep.equal([ 'decl', 'a', 'rest' ]);
+    });
 });
 
 describe('bidirectional relationship at non visitor keys.', function() {
     it('ExpressionStatement <-> Identifier', function() {
-        let tree = {
+        const tree = {
             type: 'ExpressionStatement',
             expression: {
                 type: 'Identifier',
@@ -318,20 +489,18 @@ describe('bidirectional relationship at non visitor keys.', function() {
         };
         tree.expression.parent = tree;
 
-        let log = [];
+        const log = [];
         esrecurse.visit(tree, {
             Identifier(node) {
                 return log.push(node.name);
             }
-        }
-        );
+        });
 
+        expect(log).to.deep.equal(['foo']);
+    });
 
-        return expect(log).to.deep.equal(['foo']);
-});
-
-    return it('ExpressionStatement <-> UnknownNode with the childVisitorKeys option', function() {
-        let tree = {
+    it('ExpressionStatement <-> UnknownNode with the childVisitorKeys option', function() {
+        const tree = {
             type: 'ExpressionStatement',
             expression: {
                 type: 'UnknownNode',
@@ -344,7 +513,7 @@ describe('bidirectional relationship at non visitor keys.', function() {
         tree.expression.parent = tree;
         tree.expression.argument.parent = tree.expression;
 
-        let log = [];
+        const log = [];
         esrecurse.visit(
             tree,
             {
@@ -359,7 +528,6 @@ describe('bidirectional relationship at non visitor keys.', function() {
             }
         );
 
-
-        return expect(log).to.deep.equal(['foo']);
-});
+        expect(log).to.deep.equal(['foo']);
+    });
 });
